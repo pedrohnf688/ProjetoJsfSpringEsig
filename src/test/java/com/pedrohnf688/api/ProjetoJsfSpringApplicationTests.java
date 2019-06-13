@@ -1,4 +1,4 @@
-package com.pedrohnf688.api.ProjetoJsfSpring;
+package com.pedrohnf688.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
