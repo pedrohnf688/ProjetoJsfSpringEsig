@@ -15,5 +15,7 @@ public interface IGenericDao<T, ID extends Serializable> {
 	Optional<Tarefa> findById(ID id);
 
 	List<T> listAll();
+	
+	void deleteById(ID id);
 
 }

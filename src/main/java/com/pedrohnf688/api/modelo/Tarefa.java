@@ -1,12 +1,16 @@
 package com.pedrohnf688.api.modelo;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Tarefa {
+public class Tarefa implements Serializable {
+
+	private static final long serialVersionUID = 62982193419037613L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,6 +57,5 @@ public class Tarefa {
 	public String toString() {
 		return "Tarefa [id=" + id + ", nome=" + nome + ", status=" + status + "]";
 	}
-
 
 }

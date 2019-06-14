@@ -9,7 +9,7 @@
 <ui:composition template="layout.xhtml">
     <ui:define name="content">
         <h:form id="form">
-            <p:panel header="Products List">
+            <p:panel header="Lista de Tarefas">
                 <p:dataTable id="table" var="tarefa" value="#{tarefaListar.listaTarefas}">
                     <p:column>
                         <p:selectBooleanCheckbox value="#{tarefa.status}"/>                      

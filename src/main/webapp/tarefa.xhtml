@@ -8,15 +8,68 @@
 	xmlns:p="http://primefaces.org/ui">
 <ui:composition template="layout.xhtml">
 	<ui:define name="content">
-		<h:form id="productForm">
-			<p:panel header="Product Details">
-				<h:panelGrid columns="1">
-					<p:outputLabel for="name" value="Name: " />
+
+		<h:form id="form">
+			<p:panel style="width:370px">
+				<h:panelGrid columns="2">
 					<p:inputText id="name" value="#{tarefaController.tarefa.nome}" />
-					<h:commandButton value="Save"
-						action="#{tarefaController.salvarTarefa}" />
+					<h:commandButton value="Adicionar"
+						action="#{tarefaController.salvarTarefa}" update="form" />
 				</h:panelGrid>
 			</p:panel>
+			<br />
+			<br />
+			<p:growl id="msgs" showDetail="true" />
+			<p:dataTable id="tarefas" var="tarefa"
+				rendered="#{not empty tarefaController.listaTarefas}"
+				value="#{tarefaController.listaTarefas}" editable="true"
+				editMode="cell" widgetVar="cellTafedas" scrollRows="20"
+				scrollable="true" liveScroll="true" scrollHeight="200"
+				style="width:370px">
+				<p:ajax event="cellEdit" listener="#{tarefaController.onCellEdit}"
+					update=":form:msgs" />
+
+				<p:column style="width:60px">
+					<h:commandLink action="#{tarefaController.mudarStatus(tarefa)}"
+						update="form">
+						<h:panelGroup rendered="#{tarefa.status eq false}">
+							<img src="resources/img/verified.png"
+								onmouseover="this.src='resources/img/success.png'"
+								onmouseout="this.src='resources/img/verified.png'" />
+						</h:panelGroup>
+						<h:panelGroup rendered="#{tarefa.status eq true}">
+							<img src="resources/img/success.png" />
+						</h:panelGroup>
+					</h:commandLink>
+				</p:column>
+
+
+				<p:column>
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{tarefa.nome}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText id="modelInput" value="#{tarefa.nome}"
+								style="width:100%" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				
+				<p:column style="width:60px">
+					<h:commandLink
+						action="#{tarefaController.removerTarefaPorId(tarefa.id)}"
+						update="form">
+						<img src="resources/img/garbage.png"
+							onmouseover="this.src='resources/img/garbage2.png'"
+							onmouseout="this.src='resources/img/garbage.png'" />
+					</h:commandLink>
+				</p:column>
+
+			</p:dataTable>
+
+
 		</h:form>
 	</ui:define>
 </ui:composition>

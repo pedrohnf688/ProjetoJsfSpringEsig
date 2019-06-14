@@ -46,4 +46,9 @@ public class TarefaService implements ITarefaDao {
 		return this.tarefaRepository.findByTarefaStatusFeitas();
 	}
 
+	@Override
+	public void deleteById(Integer id) {
+		 this.tarefaRepository.deleteById(id);
+	}
+
 }
