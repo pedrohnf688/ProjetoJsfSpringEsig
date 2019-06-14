@@ -1,10 +1,10 @@
 package com.pedrohnf688.api.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 import org.ocpsoft.rewrite.annotation.Join;
@@ -31,13 +31,7 @@ public class TarefaController {
 
 	private List<Tarefa> listaTarefas;
 
-	private Tarefa tarefa;
-
-	@PostConstruct
-	public void init() {
-		tarefa = new Tarefa();
-		carregarDados();
-	}
+	private Tarefa tarefa = new Tarefa();
 
 	@Deferred
 	@RequestAction
@@ -78,30 +72,50 @@ public class TarefaController {
 		this.tarefaService.save(t);
 	}
 
-	public List<Tarefa> ListaStatusAtivos() {
+	public void MudarListaStatusFeito(List<Tarefa> t) {
+
+		if (listaStatusFeitos().size() == t.size()) {
+			for (Tarefa tarefa : t) {
+				tarefa.setStatus(false);
+				this.tarefaService.save(tarefa);
+			}
+		} else if (listaStatusFeitos().size() < listaStatusAtivos().size()
+				|| listaStatusFeitos().size() > listaStatusAtivos().size()
+				|| listaStatusAtivos().size() == listaStatusFeitos().size()) {
+			for (Tarefa tarefa : t) {
+				tarefa.setStatus(true);
+				this.tarefaService.save(tarefa);
+			}
+		}
+
+	}
+
+	public List<Tarefa> listaStatusAtivos() {
 		return this.tarefaService.findByTarefaStatus();
 	}
 
-	public List<Tarefa> ListaStatusFeitos() {
+	public List<Tarefa> listaStatusFeitos() {
 		return this.tarefaService.findByTarefaStatusFeitas();
 	}
 
 	public void onCellEdit(CellEditEvent event) {
 		Object oldValue = event.getOldValue();
-
 		Object newValue = event.getNewValue();
 
-		FacesContext context = FacesContext.getCurrentInstance();
 		if (newValue != null && !newValue.equals(oldValue)) {
-
-			Tarefa tarefa = context.getApplication().evaluateExpressionGet(context, "#{tarefa}", Tarefa.class);
+			FacesContext context = FacesContext.getCurrentInstance();
+			Tarefa tarefa = context.getApplication().evaluateExpressionGet(context, "#{tarefas2}", Tarefa.class);
 			this.tarefaService.save(tarefa);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed",
 					"Old: " + oldValue + ", New:" + newValue);
-			FacesContext.getCurrentInstance().addMessage(null, msg);
-			carregarDados();
+
 		}
 
+	}
+
+	public void mensagem(Severity severity, String summary, String detail) {
+		FacesMessage msg = new FacesMessage(severity, summary, detail);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	public List<Tarefa> getListaTarefas() {

@@ -8,11 +8,11 @@ import com.pedrohnf688.api.modelo.Tarefa;
 
 public interface IGenericDao<T, ID extends Serializable> {
 
-	void save(T tarefa);
+	void save(T object);
 
-	void delete(T tarefa);
+	void delete(T object);
 
-	Optional<Tarefa> findById(ID id);
+	Optional<T> findById(ID id);
 
 	List<T> listAll();
 	
