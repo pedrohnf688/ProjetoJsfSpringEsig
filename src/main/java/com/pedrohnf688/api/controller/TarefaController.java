@@ -28,10 +28,10 @@ public class TarefaController {
 
 	@Autowired
 	private TarefaService tarefaService;
-
 	private List<Tarefa> listaTarefas;
-
 	private Tarefa tarefa = new Tarefa();
+	private int qtdTarefaStatusAtivo;
+	private int qtdTarefasStatusFeitas;
 
 	@Deferred
 	@RequestAction
@@ -46,7 +46,9 @@ public class TarefaController {
 			this.tarefaService.save(tarefa);
 			tarefa = new Tarefa();
 			carregarDados();
+
 		}
+
 	}
 
 	public void editarTarefa(Tarefa t) {
@@ -73,7 +75,6 @@ public class TarefaController {
 	}
 
 	public void MudarListaStatusFeito(List<Tarefa> t) {
-
 		if (listaStatusFeitos().size() == t.size()) {
 			for (Tarefa tarefa : t) {
 				tarefa.setStatus(false);
@@ -98,13 +99,23 @@ public class TarefaController {
 		return this.tarefaService.findByTarefaStatusFeitas();
 	}
 
+	public void carregarListaStatusAtivos() {
+		listaTarefas = listaStatusAtivos();
+	}
+
+	public void carregarListaStatusFeitos() {
+		listaTarefas = listaStatusFeitos();
+	}
+
 	public void onCellEdit(CellEditEvent event) {
 		Object oldValue = event.getOldValue();
 		Object newValue = event.getNewValue();
 
 		if (newValue != null && !newValue.equals(oldValue)) {
 			FacesContext context = FacesContext.getCurrentInstance();
+
 			Tarefa tarefa = context.getApplication().evaluateExpressionGet(context, "#{tarefas2}", Tarefa.class);
+
 			this.tarefaService.save(tarefa);
 			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed",
 					"Old: " + oldValue + ", New:" + newValue);
@@ -113,7 +124,22 @@ public class TarefaController {
 
 	}
 
-	public void mensagem(Severity severity, String summary, String detail) {
+	public int getQtdTarefaStatusAtivo() {
+		qtdTarefaStatusAtivo = this.tarefaService.findByTarefaStatus().size();
+		return qtdTarefaStatusAtivo;
+	}
+
+	public String deletarTarefasStatusFeitas() {
+		this.tarefaService.deleteAll(listaStatusFeitos());
+		return "/tarefa.xhtml?faces-redirect=true";
+	}
+
+	public int getQtdTarefasStatusFeitas() {
+		qtdTarefasStatusFeitas = this.tarefaService.findByTarefaStatusFeitas().size();
+		return qtdTarefasStatusFeitas;
+	}
+
+	public void addMensagem(Severity severity, String summary, String detail) {
 		FacesMessage msg = new FacesMessage(severity, summary, detail);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}

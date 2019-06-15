@@ -51,4 +51,10 @@ public class TarefaService implements ITarefaDao {
 		 this.tarefaRepository.deleteById(id);
 	}
 
+	@Override
+	public void deleteAll(List<Tarefa> lista) {
+		this.tarefaRepository.deleteAll(lista);
+		
+	}
+
 }

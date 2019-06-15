@@ -14,5 +14,4 @@ public interface TarefaRepository extends JpaRepository<Tarefa, Integer> {
 
 	@Query(value = "SELECT * FROM Tarefa t WHERE t.status = true", nativeQuery = true)
 	List<Tarefa> findByTarefaStatusFeitas();
-
 }

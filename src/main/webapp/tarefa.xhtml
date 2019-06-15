@@ -10,24 +10,27 @@
 	<ui:define name="content">
 
 		<h:form id="form">
-          	
-			<p:panel style="width:370px">
-				<h:panelGrid columns="3">
-				<h:commandLink action="#{tarefaController.MudarListaStatusFeito(tarefaController.listaTarefas)}" update="form">
-				<img src="resources/img/arrow-transparent.png"/>
-				</h:commandLink>
-					<p:inputText id="name" value="#{tarefaController.tarefa.nome}"/>
-					<h:commandButton value="Adicionar"
-						action="#{tarefaController.salvarTarefa}" update="form" />
-				
-				</h:panelGrid>
-			</p:panel>
 
- <p:growl id="msgs" showDetail="true"/>
+			<p:panel style="width:500px" >
+				 <h:panelGrid columns="3" style="heigth:100px">
+	             
+				<h:commandLink action="#{tarefaController.MudarListaStatusFeito(tarefaController.listaTarefas)}" update="form" style="margin-right:-5px">
+				<img src="resources/img/angle-arrow-down.png"/>
+				</h:commandLink>
+				
+					<p:inputText id="name" placeholder="O que precisa ser feito?" value="#{tarefaController.tarefa.nome}" style="margin-left:30px;width:300px"/>
+				
+					<h:commandButton value="Adicionar"
+						action="#{tarefaController.salvarTarefa}" update="form" style="margin-left:10px" />
+			
+			 	</h:panelGrid>
+			</p:panel>
+			
+          <p:growl id="msgs" showDetail="true"/>
         
 			<p:dataTable id="tarefas2" var="tarefa" rendered="#{not empty tarefaController.listaTarefas}"
 				value="#{tarefaController.listaTarefas}" editable="true" editMode="cell" widgetVar="cellTarefas" 
-				scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="250" style="width:370px">
+			     style="width:500px">
 				
 				<p:ajax event="cellEdit" listener="#{tarefaController.onCellEdit}" update=":form:msgs" />
 
@@ -67,11 +70,26 @@
 							onmouseout="this.src='resources/img/garbage_transparent.png'" />
 					</h:commandLink>
 				</p:column>
-				
-				
-				
 
+	
 			</p:dataTable>
+			
+			<p:toolbar style="width:500px">
+              
+			    <f:facet name="left">
+			      <div id="testeSize" style="font-size:11px;" >
+			         <h:outputText id="display" value="#{tarefaController.qtdTarefaStatusAtivo} tarefas restantes" style="margin-right:20px;margin-left:4px;" update="form"/>
+                     <p:commandButton  value="Todos" action="#{tarefaController.carregarDados}"  style="margin-right:10px;" update="form"/>
+                     <p:commandButton  value="Ativos" action="#{tarefaController.carregarListaStatusAtivos}" style="margin-right:10px;" update="form"/>
+                     <p:commandButton  value="Concluídos" action="#{tarefaController.carregarListaStatusFeitos}"  style="margin-right:25px;" update="form"/>
+                     <p:commandButton  value="Apagar Concluídos" action="#{tarefaController.deletarTarefasStatusFeitas}" disabled="#{tarefaController.qtdTarefasStatusFeitas eq 0}" update="form"/>
+                  </div>
+                </f:facet>
+             
+            </p:toolbar>
+						
+	
+             
  		</h:form>
 		
 		
