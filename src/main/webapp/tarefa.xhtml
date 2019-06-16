@@ -28,14 +28,12 @@
 			</p:panel>
 			
   
-           <p:growl autoUpdate="true" />
+            <p:growl id="msgs" showDetail="true"/>
      
   
 			<p:dataTable id="tarefas" var="tarefa" rendered="#{not empty tarefaController.listaTarefas}"
-				value="#{tarefaController.listaTarefas}" editable="true" editMode="cell" widgetVar="cellTarefas" 
-			     style="width:500px">
+				value="#{tarefaController.listaTarefas}" style="width:500px">
 				
-				<p:ajax event="cellEdit" listener="#{tarefaController.onCellEdit}" update=":form:tarefas" />
 				
 				<p:column style="width:60px">
 					<h:commandLink action="#{tarefaController.mudarStatus(tarefa)}"	update="form">
@@ -61,6 +59,16 @@
 								style="width:100%" />
 						</f:facet>
 					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:60px">
+					<h:commandLink
+						action="#{tarefaController.editarTarefa(tarefa)}"
+						update="form">
+						<img src="resources/img/edit.png"
+							onmouseover="this.src='resources/img/edit2.png'"
+							onmouseout="this.src='resources/img/edit.png'" />
+					</h:commandLink>
 				</p:column>
 				
 				

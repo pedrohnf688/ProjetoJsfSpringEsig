@@ -54,8 +54,9 @@ public class TarefaController implements Serializable{
 
 	}
 
-	public void editarTarefa(Tarefa t) {
+	public String editarTarefa(Tarefa t) {
 		this.tarefa = t;
+		return "tarefa.xhtml";
 	}
 
 	public void removerTarefa(Tarefa t) {
