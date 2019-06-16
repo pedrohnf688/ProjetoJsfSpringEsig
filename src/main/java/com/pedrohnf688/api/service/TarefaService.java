@@ -17,8 +17,8 @@ public class TarefaService implements ITarefaDao {
 	private TarefaRepository tarefaRepository;
 
 	@Override
-	public void save(Tarefa tarefa) {
-		this.tarefaRepository.save(tarefa);
+	public Tarefa save(Tarefa tarefa) {
+		return this.tarefaRepository.save(tarefa);
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class TarefaService implements ITarefaDao {
 	}
 
 	@Override
-	public Optional<Tarefa> findById(Integer id) {
+	public Optional<Tarefa> findById(Long id) {
 		return this.tarefaRepository.findById(id);
 	}
 
@@ -47,7 +47,7 @@ public class TarefaService implements ITarefaDao {
 	}
 
 	@Override
-	public void deleteById(Integer id) {
+	public void deleteById(Long id) {
 		 this.tarefaRepository.deleteById(id);
 	}
 

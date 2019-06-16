@@ -1,8 +1,7 @@
 package com.pedrohnf688.api.repository;
 
-
-
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -27,15 +26,15 @@ public class TarefaRepositoryTest {
 	@Before
 	public void setUp() throws Exception {
 
-		Tarefa t = new Tarefa();
-		t.setNome("Limpar");
-		t.setStatus(false);
-		this.tarefaRepository.save(t);
-
 		Tarefa t1 = new Tarefa();
-		t.setNome("Varrer");
-		t.setStatus(false);
+		t1.setNome("Limpar");
+		t1.setStatus(false);
 		this.tarefaRepository.save(t1);
+
+		Tarefa t2 = new Tarefa();
+		t2.setNome("Correr");
+		t2.setStatus(true);
+		this.tarefaRepository.save(t2);
 
 	}
 
@@ -44,10 +43,26 @@ public class TarefaRepositoryTest {
 	}
 
 	@Test
-	public void testBuscarStatus() {
-		List<Tarefa> e = this.tarefaRepository.findByTarefaStatus();
+	public void testeStatusAtivo() {
+		List<Tarefa> f = this.tarefaRepository.findByTarefaStatus();
 
-
+		for (Tarefa tarefa : f) {
+			assertNotNull(tarefa);
+		}
 	}
 
+	@Test
+	public void testeStatusFeitos() {
+		List<Tarefa> f = this.tarefaRepository.findByTarefaStatusFeitas();
+		
+		for (Tarefa tarefa : f) {
+			assertNotNull(tarefa);
+		}
+	}
+	
+	
+	
+	
+	
+	
 }

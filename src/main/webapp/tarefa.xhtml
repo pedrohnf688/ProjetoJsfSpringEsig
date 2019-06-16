@@ -11,6 +11,7 @@
 
 		<h:form id="form">
 
+             
 			<p:panel style="width:500px" >
 				 <h:panelGrid columns="3" style="heigth:100px">
 	             
@@ -26,14 +27,16 @@
 			 	</h:panelGrid>
 			</p:panel>
 			
-          <p:growl id="msgs" showDetail="true"/>
-        
-			<p:dataTable id="tarefas2" var="tarefa" rendered="#{not empty tarefaController.listaTarefas}"
+  
+           <p:growl autoUpdate="true" />
+     
+  
+			<p:dataTable id="tarefas" var="tarefa" rendered="#{not empty tarefaController.listaTarefas}"
 				value="#{tarefaController.listaTarefas}" editable="true" editMode="cell" widgetVar="cellTarefas" 
 			     style="width:500px">
 				
-				<p:ajax event="cellEdit" listener="#{tarefaController.onCellEdit}" update=":form:msgs" />
-
+				<p:ajax event="cellEdit" listener="#{tarefaController.onCellEdit}" update=":form:tarefas" />
+				
 				<p:column style="width:60px">
 					<h:commandLink action="#{tarefaController.mudarStatus(tarefa)}"	update="form">
 						<h:panelGroup rendered="#{tarefa.status eq false}">
@@ -87,9 +90,7 @@
                 </f:facet>
              
             </p:toolbar>
-						
-	
-             
+			
  		</h:form>
 		
 		

@@ -1,8 +1,8 @@
 package com.pedrohnf688.api.controller;
 
+import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
@@ -13,6 +13,7 @@ import org.ocpsoft.rewrite.el.ELBeanName;
 import org.ocpsoft.rewrite.faces.annotation.Deferred;
 import org.ocpsoft.rewrite.faces.annotation.IgnorePostback;
 import org.primefaces.event.CellEditEvent;
+import org.primefaces.event.RowEditEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -24,7 +25,9 @@ import com.pedrohnf688.api.service.TarefaService;
 @Component(value = "tarefaController")
 @ELBeanName(value = "tarefaController")
 @Join(path = "/", to = "/tarefa.jsf")
-public class TarefaController {
+public class TarefaController implements Serializable{
+
+	private static final long serialVersionUID = 897434443868250709L;
 
 	@Autowired
 	private TarefaService tarefaService;
@@ -60,7 +63,7 @@ public class TarefaController {
 		carregarDados();
 	}
 
-	public void removerTarefaPorId(Integer id) {
+	public void removerTarefaPorId(Long id) {
 		this.tarefaService.deleteById(id);
 		carregarDados();
 	}
@@ -107,18 +110,26 @@ public class TarefaController {
 		listaTarefas = listaStatusFeitos();
 	}
 
+	public void onRowEdit(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Car Edited");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public void onRowCancel(RowEditEvent event) {
+		FacesMessage msg = new FacesMessage("Edit Cancelled");
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
 	public void onCellEdit(CellEditEvent event) {
 		Object oldValue = event.getOldValue();
 		Object newValue = event.getNewValue();
 
-		if (newValue != null && !newValue.equals(oldValue)) {
-			FacesContext context = FacesContext.getCurrentInstance();
+		FacesContext context = FacesContext.getCurrentInstance();
+		Tarefa tarefa = context.getApplication().evaluateExpressionGet(context, "#{tarefa}", Tarefa.class);
 
-			Tarefa tarefa = context.getApplication().evaluateExpressionGet(context, "#{tarefas2}", Tarefa.class);
+		if (tarefa != null) {
 
 			this.tarefaService.save(tarefa);
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed",
-					"Old: " + oldValue + ", New:" + newValue);
 
 		}
 
