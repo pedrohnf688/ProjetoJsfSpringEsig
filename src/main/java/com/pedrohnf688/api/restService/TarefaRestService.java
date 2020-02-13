@@ -81,21 +81,23 @@ public class TarefaRestService {
 		return ResponseEntity.ok(new Response<String>());
 	}
 
-//	@GetMapping
-//	public void MudarListaStatusFeito(List<Tarefa> t) {
-//		if (listaStatusFeitos().size() == t.size()) {
-//			for (Tarefa tarefa : t) {
-//				tarefa.setStatus(false);
-//				this.tarefaService.save(tarefa);
-//			}
-//		} else if (listaStatusFeitos().size() < listaStatusAtivos().size()
-//				|| listaStatusFeitos().size() > listaStatusAtivos().size()
-//				|| listaStatusAtivos().size() == listaStatusFeitos().size()) {
-//			for (Tarefa tarefa : t) {
-//				tarefa.setStatus(true);
-//				this.tarefaService.save(tarefa);
-//			}
-//		}
-//	}
+	@GetMapping(value = "/statusLista")
+	public void MudarListaStatusFeito() {
+		List<Tarefa> t = this.tarefaService.listAll();
+
+		if (listaStatusFeitos().size() == t.size()) {
+			for (Tarefa tarefa : t) {
+				tarefa.setStatus(false);
+				this.tarefaService.save(tarefa);
+			}
+		} else if (listaStatusFeitos().size() < listaStatusAtivos().size()
+				|| listaStatusFeitos().size() > listaStatusAtivos().size()
+				|| listaStatusAtivos().size() == listaStatusFeitos().size()) {
+			for (Tarefa tarefa : t) {
+				tarefa.setStatus(true);
+				this.tarefaService.save(tarefa);
+			}
+		}
+	}
 
 }
