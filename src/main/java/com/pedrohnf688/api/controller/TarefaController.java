@@ -25,7 +25,7 @@ import com.pedrohnf688.api.service.TarefaService;
 @Component(value = "tarefaController")
 @ELBeanName(value = "tarefaController")
 @Join(path = "/", to = "/tarefa.jsf")
-public class TarefaController implements Serializable{
+public class TarefaController implements Serializable {
 
 	private static final long serialVersionUID = 897434443868250709L;
 

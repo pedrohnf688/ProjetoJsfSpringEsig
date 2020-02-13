@@ -26,13 +26,12 @@ public class TarefaRestService {
 	@Autowired
 	private TarefaService tarefaService;
 
-
 	@GetMapping
 	public List<Tarefa> buscarTarefas() {
 		List<Tarefa> tarefas = this.tarefaService.listAll();
 		return tarefas;
 	}
-	
+
 	@GetMapping(value = "/ativas")
 	public List<Tarefa> listaStatusAtivos() {
 		return this.tarefaService.findByTarefaStatus();
@@ -42,32 +41,61 @@ public class TarefaRestService {
 	public List<Tarefa> listaStatusFeitos() {
 		return this.tarefaService.findByTarefaStatusFeitas();
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Response<Tarefa>> deletarTarefaPorId(@PathVariable("id") Long id){
+	public ResponseEntity<Response<Tarefa>> deletarTarefaPorId(@PathVariable("id") Long id) {
 		Response<Tarefa> response = new Response<Tarefa>();
 		Optional<Tarefa> tarefa = this.tarefaService.findById(id);
 
-		if(!tarefa.isPresent()) {
+		if (!tarefa.isPresent()) {
 			response.getErros().add("Tarefa não encontrada");
 			ResponseEntity.badRequest().body(response);
 		}
-		
+
 		response.setData(tarefa.get());
 		this.tarefaService.deleteById(id);
 		return ResponseEntity.ok(response);
 	}
-	
-	
+
 	@PostMapping
-	public ResponseEntity<Response<Tarefa>> cadastrarTarefa(@RequestBody Tarefa tarefa){
+	public ResponseEntity<Response<Tarefa>> cadastrarTarefa(@RequestBody Tarefa tarefa) {
 		Response<Tarefa> response = new Response<Tarefa>();
-		
+
 		this.tarefaService.save(tarefa);
+
 		response.setData(tarefa);
-		
 		return ResponseEntity.ok(response);
 	}
-	
+
+	@DeleteMapping
+	public ResponseEntity<Response<String>> deletarTarefasStatusFeitas() {
+		Response<String> response = new Response<String>();
+		List<Tarefa> listaTarefas = this.tarefaService.findByTarefaStatusFeitas();
+
+		if (listaTarefas.isEmpty()) {
+			response.getErros().add("A lista de tarefas está vazia.");
+			return ResponseEntity.badRequest().body(response);
+		}
+
+		this.tarefaService.deleteAll(listaTarefas);
+		return ResponseEntity.ok(new Response<String>());
+	}
+
+//	@GetMapping
+//	public void MudarListaStatusFeito(List<Tarefa> t) {
+//		if (listaStatusFeitos().size() == t.size()) {
+//			for (Tarefa tarefa : t) {
+//				tarefa.setStatus(false);
+//				this.tarefaService.save(tarefa);
+//			}
+//		} else if (listaStatusFeitos().size() < listaStatusAtivos().size()
+//				|| listaStatusFeitos().size() > listaStatusAtivos().size()
+//				|| listaStatusAtivos().size() == listaStatusFeitos().size()) {
+//			for (Tarefa tarefa : t) {
+//				tarefa.setStatus(true);
+//				this.tarefaService.save(tarefa);
+//			}
+//		}
+//	}
 
 }
