@@ -82,7 +82,7 @@ public class TarefaRestService {
 		return ResponseEntity.ok(new Response<String>());
 	}
 
-	@PutMapping(value = "/statusLista")
+	@GetMapping(value = "/statusLista")
 	public void MudarListaStatusFeito() {
 		List<Tarefa> t = this.tarefaService.listAll();
 
